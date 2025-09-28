@@ -22,6 +22,8 @@ dwm-vanitygaps-6.2.diff ----- gaps are functional: your eye is less inclined to 
 dwm-xrdb-6.4.diff - xresource database colors
 */
 
+#include <X11/XF86keysym.h>
+
 /* appearance */
 static unsigned int borderpx        = 1;        /* border pixel of windows */
 static unsigned int snap            = 32;       /* snap pixel */
@@ -36,11 +38,11 @@ static const int showtitle          = 1;        /* 0 means no title */
 static const int showtags           = 1;        /* 0 means no tags */
 static const int showlayout         = 1;        /* 0 means no layout indicator */
 static const int showstatus         = 1;        /* 0 means no status bar */
-static const int showfloating       = 0;        /* 0 means no floating indicator */
+static const int showfloating       = 1;        /* 0 means no floating indicator */
 static int topbar                   = 1;        /* 0 means bottom bar */
 
-static char dmenufont[]             = "monospace:size=10";
-static const char *fonts[]          = { "monospace:size=10", "Hack Nerd Font Mono:size=16", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true"  };
+static char dmenufont[]             = "monospace:size=15";
+static const char *fonts[]          = { "monospace:size=15", "Hack Nerd Font Mono:size=16", "NotoColorEmoji:pixelsize=16:antialias=true:autohint=true"  };
 
 /* default colors used if xrdb is not loaded */
 static char normbgcolor[]           = "#2e3440";
@@ -65,7 +67,7 @@ static char *colors[][3] = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-// static const char *tags[] = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱", "󰎳", "󰎶", "󰎹", "󰎼" };
+//static const char *tags[] = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱", "󰎳", "󰎶", "󰎹", "󰎼" };
 
 
 static const Rule rules[] = {
@@ -90,7 +92,8 @@ static const int lockfullscreen = 0; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = { /* alt glyphs: 󱡗 󱏋 */
 	/* symbol     arrange function */
-	{ "󰓒",      tile },    /* first entry is default */
+	//{ "󰓒",      tile },    /* first entry is default */
+	{ "󱏋",      tile },    /* first entry is default */
 	{ "󰇥",      NULL },    /* no layout function means floating behavior */
 	{ "",      monocle },
 	{ "󰫣",      spiral },
@@ -121,12 +124,18 @@ static const Layout layouts[] = { /* alt glyphs: 󱡗 󱏋 */
 #define GTKCMD(cmd) { .v = (const char*[]){ "/usr/bin/gtk-launch", cmd, NULL } }
 
 #define STATUSBAR "dwmblocks"
-#define BROWSER "qutebrowser"
+//#define STATUSBAR "sxstatus"
+#define BROWSER "firefox"
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[]         = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+static const char *termcmd[]          = { "st", NULL };
+static const char *volumeUp[]         = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
+static const char *volumeDown[]       = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
+static const char *volumeMute[]       = { "wpctl",  "set-mute",   "@DEFAULT_AUDIO_SINK@", "toggle",   NULL };
+static const char *brightnessUp[]     = { "sudo",   "xbacklight", "-inc", "5", NULL };
+static const char *brightnessDown[]   = { "sudo",   "xbacklight", "-dec", "5", NULL };
 
 
 static const Arg tagexec[] = { /* spawn application when tag is middle-clicked */
@@ -144,6 +153,11 @@ static const Arg tagexec[] = { /* spawn application when tag is middle-clicked *
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
+  { 0,                            XF86XK_AudioRaiseVolume, spawn, {.v = volumeUp } },
+  { 0,                            XF86XK_AudioLowerVolume, spawn, {.v = volumeDown } },
+  { 0,                            XF86XK_AudioMute, spawn, {.v = volumeMute } },
+  { 0,                            XF86XK_MonBrightnessUp, spawn, {.v = brightnessUp } },
+  { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = brightnessDown } },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
@@ -188,7 +202,7 @@ static const Key keys[] = {
 
 /* gaps control */
 	{ MODKEY,					XK_minus,  incrgaps,       {.i = -3 } }, /* all */
-	{ MODKEY,					XK_equal,  incrgaps,       {.i = +3 } },
+	{ MODKEY,					XK_plus,  incrgaps,       {.i = +3 } },
 	{ MODKEY|Mod1Mask,              XK_i,      incrigaps,      {.i = +1 } }, /* inner */
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,      incrigaps,      {.i = -1 } },
 	{ MODKEY|Mod1Mask,              XK_o,      incrogaps,      {.i = +1 } }, /* outer */
@@ -221,7 +235,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,			XK_t,      togglebartitle, {0} },
 	{ MODKEY|ControlMask,			XK_s,      togglebarstatus,{0} },
 	{ MODKEY|ControlMask,			XK_t,      togglebartags,  {0} },
-    { MODKEY|ControlMask,			XK_e,      togglebarcolor, {0} }, /* swaps fg/bg for tag+win */
+  { MODKEY|ControlMask,			XK_e,      togglebarcolor, {0} }, /* swaps fg/bg for tag+win */
 	{ MODKEY|ControlMask,			XK_r,      togglebarlt,    {0} },
 	{ MODKEY|ControlMask,			XK_f,      togglebarfloat, {0} },
 
