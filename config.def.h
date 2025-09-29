@@ -123,19 +123,20 @@ static const Layout layouts[] = { /* alt glyphs: 󱡗 󱏋 */
 /* helper for launching gtk application */
 #define GTKCMD(cmd) { .v = (const char*[]){ "/usr/bin/gtk-launch", cmd, NULL } }
 
-#define STATUSBAR "dwmblocks"
-//#define STATUSBAR "sxstatus"
+//#define STATUSBAR "dwmblocks"
+#define STATUSBAR "sxstatus"
 #define BROWSER "firefox"
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]         = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]          = { "st", NULL };
+static const char *spotifyStart[]          = { "spotify-launcher", NULL };
 static const char *volumeUp[]         = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
 static const char *volumeDown[]       = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
-static const char *volumeMute[]       = { "wpctl",  "set-mute",   "@DEFAULT_AUDIO_SINK@", "toggle",   NULL };
-static const char *brightnessUp[]     = { "sudo",   "xbacklight", "-inc", "5", NULL };
-static const char *brightnessDown[]   = { "sudo",   "xbacklight", "-dec", "5", NULL };
+static const char *volumeMute[]       = { "wpctl",  "set-mute",   "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
+static const char *brightnessUp[]     = { "brightnessctl", "set", "10%+", NULL };
+static const char *brightnessDown[]   = { "brightnessctl", "set", "10%-", NULL };
 
 
 static const Arg tagexec[] = { /* spawn application when tag is middle-clicked */
@@ -158,6 +159,7 @@ static const Key keys[] = {
   { 0,                            XF86XK_AudioMute, spawn, {.v = volumeMute } },
   { 0,                            XF86XK_MonBrightnessUp, spawn, {.v = brightnessUp } },
   { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = brightnessDown } },
+	{ MODKEY,                       XK_m,      spawn,          {.v = spotifyStart } },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
@@ -241,7 +243,7 @@ static const Key keys[] = {
 
 
 /* application bindings */
-	{ MODKEY,			XK_m,          spawn,      {.v = (const char*[]){ "st", "-e", "termusic", NULL } } },
+	//{ MODKEY,			XK_m,          spawn,      {.v = (const char*[]){ "st", "-e", "termusic", NULL } } },
 	{ MODKEY,			XK_w,          spawn,      {.v = (const char*[]){ BROWSER, NULL } } },
 	{ MODKEY,			XK_f,          spawn,      {.v = (const char*[]){ "st", "-e", "fff", NULL } } },
 	{ MODKEY,			XK_n,          spawn,      {.v = (const char*[]){ "st", "-e", "nvim", NULL } } },
