@@ -131,13 +131,15 @@ static const Layout layouts[] = { /* alt glyphs: 󱡗 󱏋 */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]         = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]          = { "st", NULL };
-static const char *spotifyStart[]     = { "spotify", NULL };
-static const char *rstudio[]          = { "rstudio", NULL };
 static const char *volumeUp[]         = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
 static const char *volumeDown[]       = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
 static const char *volumeMute[]       = { "wpctl",  "set-mute",   "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
 static const char *brightnessUp[]     = { "brightnessctl", "set", "10%+", NULL };
 static const char *brightnessDown[]   = { "brightnessctl", "set", "10%-", NULL };
+static const char *spotifyStart[]     = { "spotify", NULL };
+static const char *rstudio[]          = { "rstudio", NULL };
+static const char *thunderbird[]      = { "thunderbird", NULL }
+//static const char *[]          = { "", NULL };
 
 
 static const Arg tagexec[] = { /* spawn application when tag is middle-clicked */
@@ -161,6 +163,7 @@ static const Key keys[] = {
   { 0,                            XF86XK_MonBrightnessUp, spawn, {.v = brightnessUp } },
   { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = brightnessDown } },
 	{ MODKEY,                       XK_m,      spawn,          {.v = spotifyStart } },
+	{ MODKEY,                       XK_u,      spawn,          {.v = thunderbird } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = rstudio } },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
