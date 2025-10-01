@@ -131,7 +131,8 @@ static const Layout layouts[] = { /* alt glyphs: 󱡗 󱏋 */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]         = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]          = { "st", NULL };
-static const char *spotifyStart[]          = { "spotify", NULL };
+static const char *spotifyStart[]     = { "spotify", NULL };
+static const char *rstudio[]          = { "rstudio", NULL };
 static const char *volumeUp[]         = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
 static const char *volumeDown[]       = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
 static const char *volumeMute[]       = { "wpctl",  "set-mute",   "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
@@ -160,6 +161,7 @@ static const Key keys[] = {
   { 0,                            XF86XK_MonBrightnessUp, spawn, {.v = brightnessUp } },
   { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = brightnessDown } },
 	{ MODKEY,                       XK_m,      spawn,          {.v = spotifyStart } },
+	{ MODKEY,                       XK_r,      spawn,          {.v = rstudio } },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
@@ -176,35 +178,35 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 
 
-	{ MODKEY|ControlMask|ShiftMask, XK_q,		quit,			{1} },  /* refresh dwm (restartsig) */
-	{ MODKEY|ShiftMask,				XK_BackSpace, quit,			{0} }, /* quit dwm */
-	{ MODKEY,						XK_q,		killclient,     {0} }, /* quit window */
-	{ MODKEY|ShiftMask,				XK_q,		killclient,     {.ui = 1} },  /* kill all windows besides current */
-    /* { MODKEY|ShiftMask|ControlMask,  XK_q,	killclient,     {.ui = 2} }, */
-	{ MODKEY|ControlMask,			XK_backslash, xrdb,			{.v = NULL } }, /* refresh xrdb; run this when setting new colors */
+	{ MODKEY|ControlMask|ShiftMask, XK_q,		        quit,			      {1} },  /* refresh dwm (restartsig) */
+	{ MODKEY|ShiftMask,				      XK_BackSpace,   quit,			      {0} }, /* quit dwm */
+	{ MODKEY,						            XK_q,		        killclient,     {0} }, /* quit window */
+	{ MODKEY|ShiftMask,				      XK_q,		        killclient,     {.ui = 1} },  /* kill all windows besides current */
+  //{ MODKEY|ShiftMask|ControlMask, XK_q,	          killclient,     {.ui = 2} },
+	{ MODKEY|ControlMask,			      XK_backslash,   xrdb,			      {.v = NULL } }, /* refresh xrdb; run this when setting new colors */
 
 
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,						XK_f,	   togglefullscreen, {0} }, /* focus fullscreen patch */
-	{ MODKEY|ShiftMask,				XK_m,      setlayout,      {.v = &layouts[2]} }, /* monacle */
-	{ MODKEY,						XK_s,      setlayout,      {.v = &layouts[3]} }, /* spiral */
-	{ MODKEY|ShiftMask,				XK_t,      setlayout,      {.v = &layouts[4]} }, /* dwindle */
-	{ MODKEY|ControlMask,			XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,				XK_space,  togglefloating, {0} },
-	{ MODKEY,						XK_space,  zoom,           {0} },
-	{ MODKEY|ControlMask,           XK_space,  focusmaster,    {0} },
-	{ MODKEY|ShiftMask,             XK_s,      togglesticky,   {0} },
+	{ MODKEY,                       XK_t,       setlayout,        {.v = &layouts[0]} },
+	{ MODKEY,						            XK_f,       togglefullscreen, {0} }, /* focus fullscreen patch */
+	{ MODKEY|ShiftMask,				      XK_m,       setlayout,        {.v = &layouts[2]} }, /* monacle */
+	{ MODKEY,						            XK_s,       setlayout,        {.v = &layouts[3]} }, /* spiral */
+	{ MODKEY|ShiftMask,				      XK_t,       setlayout,        {.v = &layouts[4]} }, /* dwindle */
+	{ MODKEY|ControlMask,			      XK_space,   setlayout,        {0} },
+	{ MODKEY|ShiftMask,				      XK_space,   togglefloating,   {0} },
+	{ MODKEY,						            XK_space,   zoom,             {0} },
+	{ MODKEY|ControlMask,           XK_space,   focusmaster,      {0} },
+	{ MODKEY|ShiftMask,             XK_s,       togglesticky,     {0} },
 
 
 /* multi-monitor control */
-	{ MODKEY,			XK_bracketright,       focusmon,       {.i = -1 } },
-	{ MODKEY|ShiftMask,		XK_bracketright,   tagmon,         {.i = -1 } },
-	{ MODKEY,			XK_bracketleft,        focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,		XK_bracketleft,    tagmon,         {.i = +1 } },
+	{ MODKEY,			        XK_bracketright,    focusmon,       {.i = -1 } },
+	{ MODKEY|ShiftMask,		XK_bracketright,    tagmon,         {.i = -1 } },
+	{ MODKEY,			        XK_bracketleft,     focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,		XK_bracketleft,     tagmon,         {.i = +1 } },
 
 /* gaps control */
-	{ MODKEY,					XK_minus,  incrgaps,       {.i = -3 } }, /* all */
-	{ MODKEY,					XK_plus,  incrgaps,       {.i = +3 } },
+	{ MODKEY,					              XK_minus,  incrgaps,       {.i = -3 } }, /* all */
+	{ MODKEY,					              XK_plus,   incrgaps,       {.i = +3 } },
 	{ MODKEY|Mod1Mask,              XK_i,      incrigaps,      {.i = +1 } }, /* inner */
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,      incrigaps,      {.i = -1 } },
 	{ MODKEY|Mod1Mask,              XK_o,      incrogaps,      {.i = +1 } }, /* outer */
@@ -243,42 +245,42 @@ static const Key keys[] = {
 
 
 /* application bindings */
-	//{ MODKEY,			XK_m,          spawn,      {.v = (const char*[]){ "st", "-e", "termusic", NULL } } },
-	{ MODKEY,			XK_w,          spawn,      {.v = (const char*[]){ BROWSER, NULL } } },
-	{ MODKEY,			XK_f,          spawn,      {.v = (const char*[]){ "st", "-e", "fff", NULL } } },
-	{ MODKEY,			XK_n,          spawn,      {.v = (const char*[]){ "st", "-e", "nvim", NULL } } },
-	{ MODKEY|ShiftMask,	XK_h,          spawn,      {.v = (const char*[]){ "st", "-e", "htop", NULL } } },
-	{ MODKEY,			XK_p,          spawn,      {.v = (const char*[]){ "darktable", NULL } } },
+	//{ MODKEY,			        XK_m,      spawn,      {.v = (const char*[]){ "st", "-e", "termusic", NULL } } },
+	{ MODKEY,			        XK_w,      spawn,      {.v = (const char*[]){ BROWSER, NULL } } },
+	{ MODKEY,			        XK_f,      spawn,      {.v = (const char*[]){ "st", "-e", "fff", NULL } } },
+	{ MODKEY,			        XK_n,      spawn,      {.v = (const char*[]){ "st", "-e", "nvim", NULL } } },
+	{ MODKEY|ShiftMask,	  XK_h,      spawn,      {.v = (const char*[]){ "st", "-e", "htop", NULL } } },
+	{ MODKEY,			        XK_p,      spawn,      {.v = (const char*[]){ "darktable", NULL } } },
 
 
 /* script launch bindings */
 	{ MODKEY|ShiftMask,		XK_n,      spawn,       {.v = (const char*[]){ "dmenunotes", NULL } } },
-	{ MODKEY,				XK_v,      spawn,       {.v = (const char*[]){ "cliphist", "sel", NULL } } },
-	{ MODKEY,				XK_c,      spawn,       {.v = (const char*[]){ "cliphist", "add", NULL } } },
+	{ MODKEY,				      XK_v,      spawn,       {.v = (const char*[]){ "cliphist", "sel", NULL } } },
+	{ MODKEY,				      XK_c,      spawn,       {.v = (const char*[]){ "cliphist", "add", NULL } } },
 	{ MODKEY|ShiftMask,		XK_a,      spawn,       {.v = (const char*[]){ "dmenuvids", NULL } } },
 	{ MODKEY|ControlMask,	XK_a,      spawn,       {.v = (const char*[]){ "dmenuaudioswitch", NULL } } },
 	{ MODKEY|ShiftMask,		XK_d,      spawn,       {.v = (const char*[]){ "rip", NULL } } },
-	{ MODKEY,				XK_r,      spawn,       {.v = (const char*[]){ "rec", NULL } } },
+	//{ MODKEY,				      XK_r,      spawn,       {.v = (const char*[]){ "rec", NULL } } },
 	{ MODKEY|ShiftMask,		XK_grave,  spawn,       {.v = (const char*[]){ "define", NULL } } },
 	{ MODKEY|ShiftMask,		XK_w,      spawn,       {.v = (const char*[]){ "wallpapermenu", NULL } } },
-	{ MODKEY,				XK_F1,     spawn,       SHCMD("screenshot") },
+	{ MODKEY,				      XK_F1,     spawn,       SHCMD("screenshot") },
 	{ MODKEY|ShiftMask,		XK_F1,     spawn,       SHCMD("screenshot color") },
-	{ MODKEY,				XK_F2,     spawn,       {.v = (const char*[]){ "vb", NULL } } },
+	{ MODKEY,				      XK_F2,     spawn,       {.v = (const char*[]){ "vb", NULL } } },
 	{ MODKEY|ShiftMask,		XK_F2,     spawn,       {.v = (const char*[]){ "dmenutemp", NULL } } },
-	{ MODKEY,				XK_F3,     spawn,       {.v = (const char*[]){ "phototransfer", NULL } } },
+	{ MODKEY,				      XK_F3,     spawn,       {.v = (const char*[]){ "phototransfer", NULL } } },
 
 
 /* other bindings */
-	{ MODKEY,				XK_F12,    spawn,       SHCMD("playerctl -p termusic next") },
-	{ MODKEY,				XK_F11,    spawn,       SHCMD("playerctl -p termusic play-pause") },
+	{ MODKEY,				      XK_F12,    spawn,       SHCMD("playerctl -p termusic next") },
+	{ MODKEY,				      XK_F11,    spawn,       SHCMD("playerctl -p termusic play-pause") },
 	{ MODKEY|ShiftMask,		XK_F11,    spawn,       SHCMD("playerctl play-pause") },
-	{ MODKEY,				XK_F10,    spawn,       SHCMD("playerctl -p termusic previous") },
+	{ MODKEY,				      XK_F10,    spawn,       SHCMD("playerctl -p termusic previous") },
 	{ MODKEY|ShiftMask,		XK_F8,     spawn,       SHCMD("slock systemctl suspend -i") },
-	{ MODKEY,				XK_F8,     spawn,       SHCMD("slock") },
-	{ MODKEY,				XK_F7,     spawn,       SHCMD("status-timer") },
+	{ MODKEY,				      XK_F8,     spawn,       SHCMD("slock") },
+	{ MODKEY,				      XK_F7,     spawn,       SHCMD("status-timer") },
 	{ MODKEY|ShiftMask,		XK_F7,     spawn,       SHCMD("status-timer cleanup") },
-	{ MODKEY,				XK_F6,     spawn,       SHCMD("amixer -D pulse sset Master 5%+") },
-	{ MODKEY,				XK_F5,     spawn,       SHCMD("amixer -D pulse sset Master 5%-") },
+	{ MODKEY,				      XK_F6,     spawn,       SHCMD("amixer -D pulse sset Master 5%+") },
+	{ MODKEY,				      XK_F5,     spawn,       SHCMD("amixer -D pulse sset Master 5%-") },
 };
 
 
@@ -302,9 +304,9 @@ static const Button buttons[] = {
 	{ ClkClientWin,			MODKEY,		Button3,	resizemouse,    {0} }, /* right click */
 	{ ClkClientWin,			MODKEY,		Button4,	incrgaps,       {.i = +1} }, /* scroll up */
 	{ ClkClientWin,			MODKEY,		Button5,	incrgaps,       {.i = -1} }, /* scroll down */
-	{ ClkTagBar,			0,			Button1,	view,           {0} },
-	{ ClkTagBar,			0,			Button3,	toggleview,     {0} },
-	{ ClkTagBar,			MODKEY,		Button1,	tag,            {0} },
-	{ ClkTagBar,			MODKEY,		Button3,	toggletag,      {0} },
-	{ ClkRootWin,			0,			Button2,	togglebar,      {0} }, /* hide bar */
+	{ ClkTagBar,			  0,			  Button1,	view,           {0} },
+	{ ClkTagBar,			  0,			  Button3,	toggleview,     {0} },
+	{ ClkTagBar,			  MODKEY,		Button1,	tag,            {0} },
+	{ ClkTagBar,			  MODKEY,		Button3,	toggletag,      {0} },
+	{ ClkRootWin,			  0,			  Button2,	togglebar,      {0} }, /* hide bar */
 };
