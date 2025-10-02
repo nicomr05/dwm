@@ -129,16 +129,17 @@ static const Layout layouts[] = { /* alt glyphs: 󱡗 󱏋 */
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *rofi[]             = { "rofi", "-show", "drun", "-show-emojis", NULL };
 static const char *dmenucmd[]         = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]          = { "st", NULL };
 static const char *volumeUp[]         = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
 static const char *volumeDown[]       = { "wpctl",  "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
 static const char *volumeMute[]       = { "wpctl",  "set-mute",   "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
-static const char *brightnessUp[]     = { "brightnessctl", "set", "10%+", NULL };
-static const char *brightnessDown[]   = { "brightnessctl", "set", "10%-", NULL };
+static const char *brightnessUp[]     = { "brightnessctl", "set", "10%+", "-n", "1", NULL };
+static const char *brightnessDown[]   = { "brightnessctl", "set", "10%-", "-n", "1", NULL };
 static const char *spotifyStart[]     = { "spotify", NULL };
 static const char *rstudio[]          = { "rstudio", NULL };
-static const char *thunderbird[]      = { "thunderbird", NULL }
+static const char *thunderbird[]      = { "thunderbird", NULL };
 //static const char *[]          = { "", NULL };
 
 
@@ -162,10 +163,8 @@ static const Key keys[] = {
   { 0,                            XF86XK_AudioMute, spawn, {.v = volumeMute } },
   { 0,                            XF86XK_MonBrightnessUp, spawn, {.v = brightnessUp } },
   { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = brightnessDown } },
-	{ MODKEY,                       XK_m,      spawn,          {.v = spotifyStart } },
-	{ MODKEY,                       XK_u,      spawn,          {.v = thunderbird } },
-	{ MODKEY,                       XK_r,      spawn,          {.v = rstudio } },
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_d,      spawn,          {.v = rofi } },
+	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	STACKKEYS(MODKEY,                          focus)
@@ -250,10 +249,12 @@ static const Key keys[] = {
 /* application bindings */
 	//{ MODKEY,			        XK_m,      spawn,      {.v = (const char*[]){ "st", "-e", "termusic", NULL } } },
 	{ MODKEY,			        XK_w,      spawn,      {.v = (const char*[]){ BROWSER, NULL } } },
-	{ MODKEY,			        XK_f,      spawn,      {.v = (const char*[]){ "st", "-e", "fff", NULL } } },
+	//{ MODKEY,			        XK_f,      spawn,      {.v = (const char*[]){ "st", "-e", "fff", NULL } } },
 	{ MODKEY,			        XK_n,      spawn,      {.v = (const char*[]){ "st", "-e", "nvim", NULL } } },
-	{ MODKEY|ShiftMask,	  XK_h,      spawn,      {.v = (const char*[]){ "st", "-e", "htop", NULL } } },
-	{ MODKEY,			        XK_p,      spawn,      {.v = (const char*[]){ "darktable", NULL } } },
+	{ MODKEY,         	  XK_b,      spawn,      {.v = (const char*[]){ "st", "-e", "btop", NULL } } },
+	{ MODKEY,             XK_m,      spawn,      {.v = spotifyStart } },
+	{ MODKEY,             XK_u,      spawn,      {.v = thunderbird } },
+	{ MODKEY,             XK_r,      spawn,      {.v = rstudio } },
 
 
 /* script launch bindings */
